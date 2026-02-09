@@ -5,6 +5,7 @@ public class App {
 
         String[] name = new String[1];
         int[] phone = new int[1];
+        char list;
 
 
 
@@ -13,6 +14,15 @@ public class App {
             String input1 = JOptionPane.showInputDialog("Enter your Mobile number");
             phone[i] = Integer.parseInt(input1);
 
+        }
+
+        switch (list) {
+            case :
+
+                break;
+        
+            default:
+                break;
         }
         
     }
