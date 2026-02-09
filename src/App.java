@@ -10,7 +10,7 @@ public class App {
 
 
         for(int i = 0; i < name.length; i++) {
-            String input = JOptionPane.showInputDialog("Enter your name");
+            String input = JOptionPane.showInputDialog("Enter your Full name");
             String input1 = JOptionPane.showInputDialog("Enter your Mobile number");
             phone[i] = Integer.parseInt(input1);
 
