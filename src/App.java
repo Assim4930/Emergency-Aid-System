@@ -17,7 +17,8 @@ public class App {
         }
 
         switch (list) {
-            case :
+            case '1':
+                System.out.println("hello");
 
                 break;
         
