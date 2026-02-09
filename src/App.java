@@ -1,7 +1,7 @@
 import javax.swing.JOptionPane;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         String[] name = new String[1];
         int[] phone = new int[1];
