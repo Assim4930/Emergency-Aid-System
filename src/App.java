@@ -5,7 +5,7 @@ public class App {
 
         String[] name = new String[1];
         int[] phone = new int[1];
-        char list;
+        
 
 
 
@@ -16,15 +16,6 @@ public class App {
 
         }
 
-        switch (list) {
-            case '1':
-                System.out.println("hello");
-
-                break;
-        
-            default:
-                break;
-        }
         
     }
 }
