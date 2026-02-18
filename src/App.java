@@ -1,4 +1,3 @@
-import javax.swing.JOptionPane;
 import java.util.Scanner;
 
 public class App {
@@ -10,50 +9,43 @@ public class App {
         String[] phone = new String[1];
         char op;
 
-        for(int i = 0; i < name.length; i++) {
+        System.out.println("==== Emergency Aid Request System ====");
+
+        for (int i = 0; i < name.length; i++) { // ادخال الإسم 
             System.out.println("Enter your name :");
             name[i] = input.nextLine();
-
         }
 
-        for(int a = 0; a < phone.length; a++) {
+        for (int a = 0; a < phone.length; a++) { // ادخال رقم الهاتف ويجب ان يكون 10 ارقام 
             System.out.println("Enter phone number :");
             phone[a] = input.nextLine();
 
-            if (phone[a].matches("\\d{10}")) {
-                System.out.println("Valid phone");
+            boolean Phone = phone[a].matches("\\d{10}");
+            boolean Name = !name[0].trim().isEmpty(); // ادخال الاسم يجب ان يكون ليس فارغ 
+
+            if (Phone && Name) {
+                System.out.println("Requester accepted");
             } else {
-                System.out.println("Invalid phone");
+                System.out.println("Requester rejected");
                 return;
             }
-            
-
         }
 
         System.out.println("Select case type");
-        System.out.println("1 - Emergency situation\n" + "\n" +  "2 - Normal situation");
+        System.out.println("1 - medical condition\n\n2 - natural disaster situation\n\n3 - security situation");
         op = input.nextLine().charAt(0);
+        
 
-        switch (op) {
+        switch (op) { // قائمة اختيار 
             case '1':
-                System.out.println("sss");
+                System.out.println("An ambulance will be dispatched...");
                 break;
-
             case '2':
-                System.out.println("2222");
+                System.out.println("The request has been sent ...");
+                break;
+            case '3':
+                System.out.println("");
                 break;
         }
-
-        
-        
-
-
-
-
-        
-
-       
-
-        
     }
 }
