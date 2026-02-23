@@ -20,8 +20,8 @@ public class App {
             System.out.println("Enter phone number :");
             phone[a] = input.nextLine();
 
-            boolean Phone = phone[a].matches("\\d{10}");
-            boolean Name = !name[0].trim().isEmpty(); // ادخال الاسم يجب ان يكون ليس فارغ 
+            boolean Phone = phone[a] != null && phone[a].matches("\\d{10}");
+            boolean Name = name[0] != null && !name[0].trim().isEmpty(); // ادخال الاسم يجب ان يكون ليس فارغ 
 
             if (Phone && Name) {
                 System.out.println("Requester accepted");
