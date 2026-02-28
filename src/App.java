@@ -1,79 +1,39 @@
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class App {
     public static void main(String[] args) {
 
-        Scanner input = new Scanner(System.in);
-
-        String[] name = new String[1];
-        String[] phone = new String[1];
-        char op;
-
         System.out.println("==== Emergency Aid Request System ====");
+
 //user, 2 conditions
-        for (int i = 0; i < name.length; i++) { // ادخال الإسم 
-            System.out.println("Enter your name :");
-            name[i] = input.nextLine();
+        String ageStr = JOptionPane.showInputDialog("Enter your age :");
+        String phoneInput = JOptionPane.showInputDialog("Enter phone number :");
+
+        if (validateUser(ageStr, phoneInput)) {
+            System.out.println("Requester accepted");
+        } else {
+            System.out.println("Requester rejected");
+            return;
         }
 
-        for (int a = 0; a < phone.length; a++) { // ادخال رقم الهاتف ويجب ان يكون 10 ارقام 
-            System.out.println("Enter phone number :");
-            phone[a] = input.nextLine();
-
-            boolean Phone = phone[a] != null && phone[a].matches("\\d{10}");
-            boolean Name = name[0] != null && !name[0].trim().isEmpty(); // ادخال الاسم يجب ان يكون ليس فارغ 
-
-            if (Phone && Name) {
-                System.out.println("Requester accepted");
-            } else {
-                System.out.println("Requester rejected");
-                input.close();
-                return;
-            }
-        }
 //request, 2 conditions
-        System.out.println("Select case type");
-        System.out.println("1 - medical condition\n\n2 - natural disaster situation\n\n3 - security situation");
-        op = input.nextLine().charAt(0);
+        String opStr = JOptionPane.showInputDialog("Select case type\n1 - medical condition\n2 - natural disaster situation\n3 - security situation");
+        char op = (opStr != null && !opStr.isEmpty()) ? opStr.charAt(0) : '0';
 
-        switch (op) { // قائمة اختيار 
-            case '1':
-                System.out.println("An ambulance will be dispatched...");
-                break;
-            case '2':
-                System.out.println("The request has been sent ...");
-                break;
-            case '3':
-                System.out.println("Security team will be notified...");
-                break;
-            default:
-                System.out.println("Request Rejected");
-                input.close();
-                return;
-        }
+        processCaseType(op);
 
-        System.out.println("Is the case urgent? Enter 1 for urgent, 2 for non urgent");
-        int urgency = Integer.parseInt(input.nextLine()); // (syntax fix)
-
-        if (urgency == 1) {
-            System.out.println("The request has been sent ...");
-        }
-        if (urgency != 1) { // (syntax fix)
+        String urgencyStr = JOptionPane.showInputDialog("Is the case urgent? Enter 1 for urgent, 2 for non urgent");
+        if (!validateUrgency(urgencyStr)) {
             System.out.println("Request Rejected");
-            input.close();
             return;
         }
 
 // ALERT, 2 conditions (new category)
-        System.out.println("Do you want to send an alert? Enter 1 for yes, 2 for no");
-        int alertOp = Integer.parseInt(input.nextLine());
+        String alertStr = JOptionPane.showInputDialog("Do you want to send an alert? Enter 1 for yes, 2 for no");
+        String location = JOptionPane.showInputDialog("Enter your location :");
 
-        System.out.println("Enter your location :");
-        String location = input.nextLine();
-
-        // condition 1: alert choice must be 1 or 2
-        // condition 2: location must not be empty (independent from responder)
-        if ((alertOp == 1 || alertOp == 2) && !location.trim().isEmpty()) {
+        if (validateAlert(alertStr, location)) {
+            int alertOp = Integer.parseInt(alertStr);
             if (alertOp == 1) {
                 System.out.println("Alert sent with location: " + location);
             } else {
@@ -81,36 +41,98 @@ public class App {
             }
         } else {
             System.out.println("Request Rejected");
-            input.close();
             return;
         }
 
 // Responder, 2 conditions
-        System.out.println("Is there capacity to accept this request?");
-        System.out.println("Enter 1 to accept, 2 to reroute");
-        int availability = Integer.parseInt(input.nextLine()); // (syntax fix)
-
-        if (availability == 1) {
+        String availabilityStr = JOptionPane.showInputDialog("Is there capacity to accept this request?\nEnter 1 to accept, 2 to reroute");
+        
+        if (validateAvailability(availabilityStr)) {
             System.out.println("Responders have been dispatched");
-        }
-        if (availability != 1) { // (syntax fix)
+        } else {
             System.out.println("Request has been rerouted");
-            input.close();
             return;
         }
 
-        // second responder condition (independent input)
-        System.out.println("How many responders are needed? (1 to 5)");
-        int respondersNeeded = Integer.parseInt(input.nextLine());
-
-        if (respondersNeeded >= 1 && respondersNeeded <= 5) {
-            System.out.println("Responders needed recorded: " + respondersNeeded);
+        String respondersStr = JOptionPane.showInputDialog("How many responders are needed? (1 to 5)");
+        if (validateRespondersCount(respondersStr)) {
+            System.out.println("Responders needed recorded: " + respondersStr);
         } else {
             System.out.println("Request Rejected");
-            input.close();
             return;
         }
 
-        input.close();
+        // الميثود الثامنة: التأكيد النهائي
+        finalizeRequest();
+    }
+
+    // 1. ميثود: ادخال العمر ويجب ان يكون رقم وادخال رقم الهاتف ويجب ان يكون 10 ارقام 
+    public static boolean validateUser(String age, String phone) {
+        try {
+            int ageVal = Integer.parseInt(age);
+            return ageVal > 0 && phone != null && phone.matches("\\d{10}");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 2. ميثود: قائمة اختيار 
+    public static void processCaseType(char op) {
+        switch (op) {
+            case '1': System.out.println("An ambulance will be dispatched..."); break;
+            case '2': System.out.println("The request has been sent ..."); break;
+            case '3': System.out.println("Security team will be notified..."); break;
+            default:
+                System.out.println("Invalid Selection");
+                System.exit(0);
+        }
+    }
+
+    // 3. ميثود: (syntax fix) للجدية
+    public static boolean validateUrgency(String urgencyStr) {
+        try {
+            int urgency = Integer.parseInt(urgencyStr);
+            if (urgency == 1) {
+                System.out.println("The request has been sent ...");
+                return true;
+            }
+            return false;
+        } catch (Exception e) { return false; }
+    }
+
+    // 4. ميثود: شرط اختيار التنبيه
+    public static boolean validateAlert(String alertStr, String location) {
+        try {
+            int alertOp = Integer.parseInt(alertStr);
+            return (alertOp == 1 || alertOp == 2) && location != null && !location.trim().isEmpty();
+        } catch (Exception e) { return false; }
+    }
+
+    // 5. ميثود: (syntax fix) للقدرة الاستيعابية
+    public static boolean validateAvailability(String availabilityStr) {
+        try {
+            int availability = Integer.parseInt(availabilityStr);
+            return availability == 1;
+        } catch (Exception e) { return false; }
+    }
+
+    // 6. ميثود: شرط عدد المستجيبين (independent input)
+    public static boolean validateRespondersCount(String countStr) {
+        try {
+            int count = Integer.parseInt(countStr);
+            return count >= 1 && count <= 5;
+        } catch (Exception e) { return false; }
+    }
+
+    // 7. ميثود لإنهاء البرنامج في حال الرفض
+    public static void terminateProgram(String message) {
+        System.out.println(message);
+        System.exit(0);
+    }
+
+    // 8. ميثود التأكيد النهائي لنجاح العملية كاملة
+    public static void finalizeRequest() {
+        JOptionPane.showMessageDialog(null, "Emergency Request Processed Successfully!");
+        System.out.println("System Shutdown: Success.");
     }
 }
